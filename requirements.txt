@@ -6,5 +6,4 @@ pandas
 scikit-learn
 matplotlib
 seaborn
-libgl1
 python-3.11
