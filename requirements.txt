@@ -1,0 +1,15 @@
+Flask==3.0.0
+flask-mysqldb==1.0.1
+python-dotenv==1.0.0
+deepface==0.0.91
+opencv-python-headless==4.7.0.72
+torch==2.2.0       # or appropriate version matching your CUDA / CPU
+transformers==4.40.0
+pandas==2.1.4
+numpy==1.26.2
+textblob==0.15.3
+mysql-connector-python==8.1.0
+Werkzeug==3.0.1
+gunicorn==21.2.0
+matplotlib==3.8.0
+sentencepiece==0.1.99

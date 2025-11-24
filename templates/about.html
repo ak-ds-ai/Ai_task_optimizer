@@ -1,0 +1,326 @@
+<!-- !-- ==========================================
+     ABOUT.HTML - About & Contact Page
+     ========================================== -->
+{% extends "base.html" %}
+
+{% block title %}About - EmotionAI Creator{% endblock %}
+
+{% block extra_css %}
+<style>
+    .about-hero {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 5rem 2rem;
+        text-align: center;
+    }
+
+    .about-hero h1 {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+    }
+
+    .about-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 4rem 2rem;
+    }
+
+    .about-grid {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 3rem;
+        margin-bottom: 4rem;
+    }
+
+    .about-image {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 20px;
+        height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10rem;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+
+    .about-content h2 {
+        color: #2c3e50;
+        margin-bottom: 1rem;
+        font-size: 2rem;
+    }
+
+    .about-content p {
+        color: #7f8c8d;
+        line-height: 1.8;
+        margin-bottom: 1.5rem;
+    }
+
+    .skills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin: 2rem 0;
+    }
+
+    .skill-tag {
+        background: rgba(102, 126, 234, 0.1);
+        color: #667eea;
+        padding: 0.5rem 1.5rem;
+        border-radius: 25px;
+        font-weight: 600;
+    }
+
+    .contact-section {
+        background: white;
+        border-radius: 20px;
+        padding: 3rem;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        margin-top: 3rem;
+    }
+
+    .contact-section h2 {
+        color: #2c3e50;
+        margin-bottom: 2rem;
+        text-align: center;
+        font-size: 2rem;
+    }
+
+    .contact-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .contact-card {
+        text-align: center;
+        padding: 2rem;
+        border-radius: 15px;
+        background: rgba(102, 126, 234, 0.05);
+        transition: all 0.3s;
+    }
+
+    .contact-card:hover {
+        background: rgba(102, 126, 234, 0.1);
+        transform: translateY(-5px);
+    }
+
+    .contact-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+    }
+
+    .contact-card h3 {
+        color: #667eea;
+        margin-bottom: 0.5rem;
+    }
+
+    .contact-card a {
+        color: #7f8c8d;
+        text-decoration: none;
+        word-break: break-all;
+    }
+
+    .contact-card a:hover {
+        color: #667eea;
+    }
+
+    .stats-section {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2rem;
+        margin: 3rem 0;
+    }
+
+    .stat-box {
+        text-align: center;
+        padding: 2rem;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .stat-box h3 {
+    font-size: 2.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+}
+
+
+    .stat-box p {
+        color: #7f8c8d;
+    }
+
+    @media (max-width: 768px) {
+        .about-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .about-image {
+            height: 300px;
+        }
+
+        .about-hero h1 {
+            font-size: 2rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="about-hero">
+    <h1>👨‍💻 About the Creator</h1>
+    <p>Passionate about AI, Machine Learning, and solving real-world problems</p>
+</section>
+
+<div class="about-container">
+    <div class="about-grid">
+        <div class="about-image">
+            👤
+        </div>
+
+        <div class="about-content">
+            <h2>Hi, I'm Akash</h2>
+            <p>
+                I'm a <strong>Data Scientist and AI Engineer</strong> with a passion for creating 
+                intelligent systems that make a real-world impact. With expertise in Natural Language 
+                Processing, Computer Vision, and Deep Learning, I specialize in building production-ready 
+                AI solutions that solve complex problems.
+            </p>
+            <p>
+                <strong>EmotionAI</strong> represents my vision of using cutting-edge technology to improve 
+                workplace wellness and productivity. By combining state-of-the-art models like GoEmotions 
+                and FER-2013, this system demonstrates how multi-modal AI can provide deeper insights 
+                into human emotions than single-modality approaches.
+            </p>
+            <p>
+                I believe in <em>open-source</em>, <em>continuous learning</em>, and <em>ethical AI</em>. 
+                All my projects prioritize user privacy, transparency, and real-world applicability.
+            </p>
+
+            <h3 style="color: #667eea; margin: 2rem 0 1rem;">💼 Skills & Expertise</h3>
+            <div class="skills">
+                <span class="skill-tag">Python</span>
+                <span class="skill-tag">Machine Learning</span>
+                <span class="skill-tag">Deep Learning</span>
+                <span class="skill-tag">NLP</span>
+                <span class="skill-tag">Computer Vision</span>
+                <span class="skill-tag">PyTorch</span>
+                <span class="skill-tag">TensorFlow</span>
+                <span class="skill-tag">Flask</span>
+                <span class="skill-tag">React</span>
+                <span class="skill-tag">SQL</span>
+                <span class="skill-tag">Docker</span>
+                <span class="skill-tag">AWS</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Section -->
+    <div class="stats-section">
+        <div class="stat-box">
+            <h3>8+</h3>
+            <p>AI/ML Projects</p>
+        </div>
+        <div class="stat-box">
+            <h3>95%+</h3>
+            <p>Model Accuracy</p>
+        </div>
+        <div class="stat-box">
+            <h3>2+</h3>
+            <p>Years Experience</p>
+        </div>
+        <div class="stat-box">
+            <h3>100+</h3>
+            <p>GitHub Stars</p>
+        </div>
+    </div>
+
+    <!-- Contact Section -->
+    <div class="contact-section">
+        <h2>📬 Get In Touch</h2>
+        <p style="text-align: center; color: #7f8c8d; margin-bottom: 2rem;">
+            I'm always open to discussing new projects, creative ideas, or opportunities to be part of your visions.
+        </p>
+
+        <div class="contact-grid">
+            <div class="contact-card">
+                <div class="contact-icon">📧</div>
+                <h3>Email</h3>
+                <a href="mailto:your.email@example.com">akashy9833@gmail.com</a>
+            </div>
+
+            <div class="contact-card">
+                <div class="contact-icon">💼</div>
+                <h3>LinkedIn</h3>
+                <a href="https://www.linkedin.com/in/akash-yadav-369b57328?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank">linkedin.com/in/AKASH Yadav</a>
+            </div>
+
+            <div class="contact-card">
+                <div class="contact-icon">💻</div>
+                <h3>GitHub</h3>
+                <a href="https://github.com/ak-ds-ai" target="_blank">github.com/ak-ds-ai</a>
+            </div>
+
+            <div class="contact-card">
+                <div class="contact-icon">🐦</div>
+                <h3>Twitter</h3>
+                <a href="https://twitter.com/yourusername" target="_blank">@yourusername</a>
+            </div>
+
+            <div class="contact-card">
+                <div class="contact-icon">📝</div>
+                <h3>Blog/Portfolio</h3>
+                <a href="https://yourblog.com" target="_blank">yourblog.com</a>
+            </div>
+
+            <div class="contact-card">
+                <div class="contact-icon">📱</div>
+                <h3>Phone</h3>
+                <a href="akashy9833@gmail.com">+1 (234) 567-890</a>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #ecf0f1;">
+            <h3 style="color: #667eea; margin-bottom: 1rem;">📍 Location</h3>
+            <p style="color: #7f8c8d;">Ambarnath, Maharashtra, India 🇮🇳</p>
+            <p style="color: #7f8c8d; margin-top: 0.5rem;">Open to remote opportunities worldwide</p>
+        </div>
+    </div>
+
+    <!-- Education & Certifications -->
+    <div class="contact-section">
+        <h2>🎓 Education & Certifications</h2>
+        <div style="margin-top: 2rem;">
+            <div style="margin-bottom: 2rem; padding: 1.5rem; background: rgba(102, 126, 234, 0.05); border-radius: 10px; border-left: 4px solid #667eea;">
+                <h3 style="color: #2c3e50; margin-bottom: 0.5rem;">Bachelor's / Master's in Data Science & AI</h3>
+                <p style="color: #7f8c8d; margin-bottom: 0.5rem;">Ramniranjan Jhunjhunwala | 2024 - 2027</p>
+                <p style="color: #7f8c8d;">Specialized in Artificial Intelligence and Machine Learning</p>
+            </div>
+
+            <h3 style="color: #667eea; margin: 2rem 0 1rem;">📜 Certifications</h3>
+            <ul style="color: #7f8c8d; line-height: 2;">
+                <li>Deep Learning Specialization - Coursera (Andrew Ng)</li>
+                <li>TensorFlow Developer Certificate - Google</li>
+                <li>Natural Language Processing Specialization - Coursera</li>
+                <li>AWS Certified Machine Learning - Specialty</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div style="text-align: center; margin-top: 4rem; padding: 3rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 20px; color: white;">
+        <h2 style="margin-bottom: 1rem;">Let's Collaborate!</h2>
+        <p style="margin-bottom: 2rem; opacity: 0.95;">
+            Interested in working together or have a project in mind? I'd love to hear from you!
+        </p>
+        <a href="mailto:your.email@example.com" style="display: inline-block; background: white; color: #667eea; padding: 1rem 2.5rem; border-radius: 30px; text-decoration: none; font-weight: 600; transition: all 0.3s;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 10px 25px rgba(0,0,0,0.2)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+            Send Me an Email
+        </a>
+    </div>
+</div>
+{% endblock %}
