@@ -13,3 +13,12 @@ Werkzeug==3.0.1
 gunicorn==21.2.0
 matplotlib==3.8.0
 sentencepiece==0.1.99
+flask-cors
+scipy
+torchvision
+torchaudio
+deepface
+huggingface-hub
+sentencepiece
+requests
+sqlalchemy
