@@ -22,3 +22,4 @@ huggingface-hub
 sentencepiece
 requests
 sqlalchemy
+Pillow
