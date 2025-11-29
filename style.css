@@ -1,0 +1,15 @@
+:root{--bg:#0f1220;--card:#151a2c;--text:#e8ecff;--accent:#6c8bff;--muted:#9aa4bf}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Arial}
+.nav{display:flex;gap:1rem;padding:1rem 2rem;background:#0b0e19;border-bottom:1px solid #1e2640}
+.nav a{color:#cfe1ff;text-decoration:none;opacity:.9}.nav a:hover{opacity:1}
+.container{max-width:1000px;margin:2rem auto;padding:0 1rem}
+.hero{padding:2rem;border:1px solid #233059;border-radius:16px;background:linear-gradient(135deg,#121935,#1a2246)}
+.btn{background:var(--accent);color:#0a0e1a;padding:.6rem 1rem;border-radius:10px;border:0;cursor:pointer}
+.btn.secondary{background:#22305c;color:#cfe1ff}
+.form{display:grid;gap:.7rem;margin-top:1rem}
+.form input,.form textarea{background:var(--card);border:1px solid #263055;color:var(--text);padding:.7rem;border-radius:10px}
+.flash{padding:.6rem .9rem;border-radius:10px;margin:.7rem 0}
+.flash.success{background:#16331e;border:1px solid #2b6d3c}
+.flash.error{background:#3a1c1c;border:1px solid #7a2d2d}
+.flash.info{background:#182e41;border:1px solid #355a7d}
+.muted{color:var(--muted)}

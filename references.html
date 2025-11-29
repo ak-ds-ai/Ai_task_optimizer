@@ -1,0 +1,280 @@
+<!-- ==========================================
+     REFERENCES.HTML - External Resources Page
+     ========================================== -->
+{% extends "base.html" %}
+
+{% block title %}References - EmotionAI Resources{% endblock %}
+
+{% block extra_css %}
+<style>
+    .ref-hero {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 3rem 2rem;
+        text-align: center;
+    }
+
+    .ref-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 3rem 2rem;
+    }
+
+    .ref-category {
+        margin-bottom: 3rem;
+    }
+
+    .ref-category h2 {
+        color: #2c3e50;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 3px solid #667eea;
+    }
+
+    .ref-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .ref-card {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        transition: all 0.3s;
+        border-left: 4px solid #667eea;
+    }
+
+    .ref-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.2);
+    }
+
+    .ref-card h3 {
+        color: #667eea;
+        margin-bottom: 0.5rem;
+        font-size: 1.3rem;
+    }
+
+    .ref-card .ref-type {
+        display: inline-block;
+        background: rgba(102, 126, 234, 0.1);
+        color: #667eea;
+        padding: 0.3rem 0.8rem;
+        border-radius: 15px;
+        font-size: 0.8rem;
+        margin-bottom: 1rem;
+    }
+
+    .ref-card p {
+        color: #7f8c8d;
+        line-height: 1.6;
+        margin-bottom: 1rem;
+    }
+
+    .ref-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #667eea;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.2s;
+    }
+
+    .ref-link:hover {
+        gap: 0.8rem;
+    }
+
+    .ref-link svg {
+        width: 16px;
+        height: 16px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="ref-hero">
+    <h1>📚 References & Resources</h1>
+    <p>External documentation, research papers, and helpful links</p>
+</section>
+
+<div class="ref-container">
+    <!-- AI Models & Frameworks -->
+    <div class="ref-category">
+        <h2>🤖 AI Models & Frameworks</h2>
+        <div class="ref-grid">
+            <div class="ref-card">
+                <span class="ref-type">NLP Model</span>
+                <h3>GoEmotions RoBERTa</h3>
+                <p>State-of-the-art emotion classification model trained on 58k Reddit comments with 28 fine-grained emotions.</p>
+                <a href="https://huggingface.co/SamLowe/roberta-base-go_emotions" target="_blank" class="ref-link">
+                    View on Hugging Face
+                    <svg fill="currentColor" viewBox="0 0 20 20"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"/><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"/></svg>
+                </a>
+            </div>
+
+            <div class="ref-card">
+                <span class="ref-type">Computer Vision</span>
+                <h3>DeepFace</h3>
+                <p>Lightweight face recognition and facial attribute analysis framework for Python with multiple backend support.</p>
+                <a href="https://github.com/serengil/deepface" target="_blank" class="ref-link">
+                    View on GitHub
+                    <svg fill="currentColor" viewBox="0 0 20 20"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"/><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"/></svg>
+                </a>
+            </div>
+
+            <div class="ref-card">
+                <span class="ref-type">NLP Library</span>
+                <h3>Hugging Face Transformers</h3>
+                <p>State-of-the-art natural language processing library with thousands of pre-trained models.</p>
+                <a href="https://huggingface.co/docs/transformers" target="_blank" class="ref-link">
+                    Read Documentation
+                    <svg fill="currentColor" viewBox="0 0 20 20"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"/><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"/></svg>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Datasets -->
+    <div class="ref-category">
+        <h2>📊 Datasets</h2>
+        <div class="ref-grid">
+            <div class="ref-card">
+                <span class="ref-type">Research Dataset</span>
+                <h3>Google GoEmotions</h3>
+                <p>58k carefully curated Reddit comments labeled with 27 emotion categories plus neutral.</p>
+                <a href="https://github.com/google-research/google-research/tree/master/goemotions" target="_blank" class="ref-link">
+                    View Repository
+                    <svg fill="currentColor" viewBox="0 0 20 20"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"/><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"/></svg>
+                </a>
+            </div>
+
+            <div class="ref-card">
+                <span class="ref-type">Image Dataset</span>
+                <h3>FER-2013</h3>
+                <p>Facial Expression Recognition dataset with 35,887 grayscale 48x48 pixel face images.</p>
+                <a href="https://www.kaggle.com/datasets/msambare/fer2013" target="_blank" class="ref-link">
+                    View on Kaggle
+                    <svg fill="currentColor" viewBox="0 0 20 20"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"/><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"/></svg>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Deep Learning Frameworks -->
+    <div class="ref-category">
+        <h2>🔥 Deep Learning Frameworks</h2>
+        <div class="ref-grid">
+            <div class="ref-card">
+                <span class="ref-type">Framework</span>
+                <h3>PyTorch</h3>
+                <p>Open-source machine learning library for Python, used for NLP model inference.</p>
+                <a href="https://pytorch.org/docs/stable/index.html" target="_blank" class="ref-link">
+                    Official Documentation
+                    <svg fill="currentColor" viewBox="0 0 20 20"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"/><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"/></svg>
+                </a>
+            </div>
+
+            <div class="ref-card">
+                <span class="ref-type">Framework</span>
+                <h3>TensorFlow</h3>
+                <p>End-to-end platform for machine learning, powers DeepFace facial recognition.</p>
+                <a href="https://www.tensorflow.org/api_docs" target="_blank" class="ref-link">
+                    API Reference
+                    <svg fill="currentColor" viewBox="0 0 20 20"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"/><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"/></svg>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Python Libraries -->
+    <div class="ref-category">
+        <h2>🐍 Python Libraries</h2>
+        <div class="ref-grid">
+            <div class="ref-card">
+                <span class="ref-type">Web Framework</span>
+                <h3>Flask</h3>
+                <p>Lightweight WSGI web application framework for Python, powers our backend API.</p>
+                <a href="https://flask.palletsprojects.com/" target="_blank" class="ref-link">
+                    Flask Documentation
+                    <svg fill="currentColor" viewBox="0 0 20 20"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"/><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"/></svg>
+                </a>
+            </div>
+
+            <div class="ref-card">
+                <span class="ref-type">Computer Vision</span>
+                <h3>OpenCV</h3>
+                <p>Open Computer Vision library for real-time computer vision and image processing.</p>
+                <a href="https://docs.opencv.org/" target="_blank" class="ref-link">
+                    OpenCV Docs
+                    <svg fill="currentColor" viewBox="0 0 20 20"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"/><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"/></svg>
+                </a>
+            </div>
+
+            <div class="ref-card">
+                <span class="ref-type">Data Science</span>
+                <h3>Pandas</h3>
+                <p>Powerful data structures and data analysis tools for Python, used for analytics.</p>
+                <a href="https://pandas.pydata.org/docs/" target="_blank" class="ref-link">
+                    Pandas Guide
+                    <svg fill="currentColor" viewBox="0 0 20 20"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"/><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"/></svg>
+                </a>
+            </div>
+
+            <div class="ref-card">
+                <span class="ref-type">Scientific Computing</span>
+                <h3>NumPy</h3>
+                <p>Fundamental package for scientific computing with Python, array operations.</p>
+                <a href="https://numpy.org/doc/" target="_blank" class="ref-link">
+                    NumPy Manual
+                    <svg fill="currentColor" viewBox="0 0 20 20"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"/><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"/></svg>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Research Papers -->
+    <div class="ref-category">
+        <h2>📄 Research Papers</h2>
+        <div class="ref-grid">
+            <div class="ref-card">
+                <span class="ref-type">ACL 2020</span>
+                <h3>GoEmotions: A Dataset of Fine-Grained Emotions</h3>
+                <p>Demszky et al. - Original research paper introducing the GoEmotions dataset.</p>
+                <a href="https://arxiv.org/abs/2005.00547" target="_blank" class="ref-link">
+                    Read on arXiv
+                    <svg fill="currentColor" viewBox="0 0 20 20"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"/><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"/></svg>
+                </a>
+            </div>
+
+            <div class="ref-card">
+                <span class="ref-type">ICML 2013</span>
+                <h3>FER-2013 Challenge</h3>
+                <p>Goodfellow et al. - Challenges in Representation Learning: Facial Expression Recognition.</p>
+                <a href="https://arxiv.org/abs/1307.0414" target="_blank" class="ref-link">
+                    Read Paper
+                    <svg fill="currentColor" viewBox="0 0 20 20"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"/><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"/></svg>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- GitHub Repositories -->
+    <div class="ref-category">
+        <h2>💻 GitHub Repositories</h2>
+        <div class="ref-grid">
+            <div class="ref-card">
+                <span class="ref-type">Project Repository</span>
+                <h3>EmotionAI Source Code</h3>
+                <p>Complete source code for the EmotionAI multi-modal emotion analysis system.</p>
+                <a href="https://github.com/yourusername/emotionai" target="_blank" class="ref-link">
+                    View on GitHub
+                    <svg fill="currentColor" viewBox="0 0 20 20"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"/><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"/></svg>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
