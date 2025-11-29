@@ -1,44 +1,28 @@
-# Flask + utils
 Flask==3.0.0
-flask-cors==4.0.0
 flask-mysqldb==1.0.1
-Werkzeug==3.0.1
 python-dotenv==1.0.0
-gunicorn==21.2.0
-
-# Data + utilities
+deepface==0.0.91
+opencv-python-headless==4.7.0.72
+torch==2.9.1        # or appropriate version matching your CUDA / CPU
+transformers==4.40.0
+pandas
 numpy==1.26.2
-pandas==2.2.2
-scipy==1.11.4
-sqlalchemy==2.0.29
-requests==2.32.3
-Pillow==10.2.0
 textblob==0.15.3
+mysql-connector-python==8.1.0
+Werkzeug==3.0.1
+gunicorn==21.2.0
 matplotlib==3.8.0
-
-# Deep learning (CPU versions)
-tensorflow-cpu==2.13.0
-keras==2.13.1
+sentencepiece==0.1.99
+flask-cors
+scipy
+torchvision
+torchaudio
+deepface
+huggingface-hub
+sentencepiece
+requests
+sqlalchemy
+Pillow
 tf-keras
 
-# Torch CPU versions (matching TF & DeepFace)
-torch==2.1.2
-torchvision==0.16.2
-torchaudio==2.1.2
-
-# Face recognition stack
-deepface==0.0.91
-mtcnn==1.0.0
-retina-face==0.0.17
-opencv-python-headless==4.7.0.72
-
-# NLP / Transformers
-transformers==4.40.0
-sentencepiece==0.1.99
-
-# DB connector
-mysql-connector-python==8.1.0
-
-# HF Hub
-huggingface-hub==0.36.0
 
