@@ -665,10 +665,6 @@
 #     app.run(debug=True, host='0.0.0.0', port=5000)
 
 
-
-
-
-
 """
 EmotionAI Multi-Page Web Application
 Flask Backend with Multi-Modal Emotion Analysis
@@ -689,7 +685,10 @@ from werkzeug.utils import secure_filename
 import torch
 
 app = Flask(__name__,template_folder='templates')
-CORS(app)
+
+# FIX 1: Proper CORS configuration
+CORS(app, resources={r"/*": {"origins": "*", "methods": ["GET", "POST", "OPTIONS"], "allow_headers": ["Content-Type"]}})
+
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
@@ -845,6 +844,11 @@ def init_db():
     conn.close()
 
 init_db()
+
+# FIX 2: Add request logging
+@app.before_request
+def log_request():
+    print(f"📨 {request.method} {request.path}")
 
 def send_hr_alert(user_id, emotion, confidence, modality):
     """Send alert to HR/Manager for negative emotions"""
@@ -1012,14 +1016,22 @@ def about():
     """About and contact page"""
     return render_template('about.html')
 
-# API Endpoints (existing functionality)
-
-@app.route('/analyze', methods=['POST'])
+# FIX 3: Add OPTIONS method and better error handling
+@app.route('/analyze', methods=['POST', 'OPTIONS'])
 def analyze():
     """Main endpoint for multi-modal emotion analysis"""
+    
+    # Handle preflight
+    if request.method == 'OPTIONS':
+        return jsonify({'success': True}), 200
+    
     try:
+        print("\n📥 Analysis request received")
+        
         user_id = request.form.get('user_id', 'anonymous')
         text_input = request.form.get('text', '').strip()
+        
+        print(f"User: {user_id}, Text: {text_input[:50] if text_input else 'None'}")
         
         facial_data = None
         text_data = None
@@ -1049,17 +1061,19 @@ def analyze():
                 if facial_result['success']:
                     facial_data = facial_result
                     facial_data['image_path'] = image_path
+                    print(f"✅ Facial: {facial_data['emotion']}")
         
         if text_input:
             text_result = analyze_text_emotion(text_input)
             if text_result['success']:
                 text_data = text_result
+                print(f"✅ Text: {text_data['primary_emotion']}")
         
         if not facial_data and not text_data:
             return jsonify({
                 'success': False,
                 'error': 'Please provide either an image or text for analysis'
-            })
+            }), 400
         
         final_emotion, final_confidence, modality = combine_emotions(facial_data, text_data)
         recommendations = TASK_RECOMMENDATIONS.get(final_emotion, TASK_RECOMMENDATIONS['neutral'])
@@ -1086,10 +1100,12 @@ def analyze():
             'timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         }
         
+        print("✅ Response sent")
         return jsonify(response)
         
     except Exception as e:
-        return jsonify({'success': False, 'error': str(e)})
+        print(f"❌ Error: {str(e)}")
+        return jsonify({'success': False, 'error': str(e)}), 500
 
 @app.route('/history/<user_id>')
 def get_history(user_id):
@@ -1141,23 +1157,20 @@ def get_analytics(user_id):
         'total_hr_alerts': hr_alerts
     })
 
+# FIX 4: Add health check
+@app.route('/health', methods=['GET'])
+def health():
+    return jsonify({'status': 'ok', 'timestamp': datetime.now().isoformat()})
+
 if __name__ == '__main__':
     print("\n" + "="*60)
-    print("🚀 EmotionAI Multi-Page Website Starting...")
+    print("🚀 EmotionAI Backend Starting...")
     print("="*60)
-    print("✅ GoEmotions RoBERTa Model Loaded")
-    print("✅ DeepFace (FER-2013) Ready")
-    print("✅ Multi-Modal Analysis Enabled")
-    print("="*60)
-    print("\n🌐 Website Pages:")
-    print("   📍 Home: http://localhost:5000/")
-    print("   📍 Projects: http://localhost:5000/projects")
-    print("   📍 Demo: http://localhost:5000/demo")
-    print("   📍 Documentation: http://localhost:5000/documentation")
-    print("   📍 References: http://localhost:5000/references")
-    print("   📍 About: http://localhost:5000/about")
-    print("="*60 + "\n")
     
     port = int(os.environ.get("PORT", 7860))
-    app.run(host="0.0.0.0", port=port)
-    # app.run(debug=True, host='0.0.0.0', port=5000)
+    
+    print(f"✅ Port: {port}")
+    print(f"✅ CORS enabled")
+    print("="*60 + "\n")
+    
+    app.run(host="0.0.0.0", port=port, debug=False)
