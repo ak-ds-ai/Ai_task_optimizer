@@ -827,11 +827,11 @@
         if (textInput) formData.append('text', textInput);
 
         try {
-            const response = await fetch('/analyze', {
-, {
-                method: 'POST',
-                body: formData
-            });
+          const response = await fetch('/analyze', {
+                                 method: 'POST',
+                                 body: formData
+           });
+
 
             const data = await response.json();
             document.getElementById('loading').style.display = 'none';
