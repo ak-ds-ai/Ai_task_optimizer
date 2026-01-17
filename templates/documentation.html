@@ -682,7 +682,7 @@ formData.append('user_id', 'user_001');
 formData.append('image', imageFile);
 formData.append('text', 'Feeling anxious');
 
-fetch('http://localhost:5000/analyze', {
+fetch('/analyze', {
     method: 'POST',
     body: formData
 })
