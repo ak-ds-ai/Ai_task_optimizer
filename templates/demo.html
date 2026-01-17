@@ -1,0 +1,982 @@
+{% extends "base.html" %}
+
+{% block title %}Live Demo - EmotionAI Analysis{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Override base container for demo page */
+    .main-content {
+        padding: 0;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: calc(100vh - 70px);
+    }
+
+    /* Demo page specific styles */
+    .demo-wrapper {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: calc(100vh - 70px);
+        padding: 2rem 1rem;
+        position: relative;
+    }
+
+    .demo-header {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        color: white;
+        padding: 2rem;
+        text-align: center;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    .demo-header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .demo-badges {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 1rem;
+    }
+
+    .badge {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+    }
+
+    /* Particles background */
+    .particles {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        pointer-events: none;
+    }
+
+    .particle {
+        position: absolute;
+        background: rgba(102, 126, 234, 0.1);
+        border-radius: 50%;
+        animation: float 15s infinite;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        50% { transform: translateY(-100px) rotate(180deg); }
+    }
+
+    /* Main grid layout */
+    .main-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 25px;
+        margin-top: 30px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .card {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 20px;
+        padding: 25px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        backdrop-filter: blur(10px);
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 25px 70px rgba(0,0,0,0.4);
+    }
+
+    .card h2 {
+        color: #667eea;
+        margin-bottom: 20px;
+        font-size: 1.5em;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .user-input {
+        margin-bottom: 20px;
+    }
+
+    .user-input label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .user-input input, .user-input textarea {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        font-size: 1em;
+        transition: border 0.3s;
+        font-family: inherit;
+    }
+
+    .user-input textarea {
+        min-height: 100px;
+        resize: vertical;
+    }
+
+    .user-input input:focus, .user-input textarea:focus {
+        outline: none;
+        border-color: #667eea;
+    }
+
+    .upload-area {
+        border: 3px dashed #667eea;
+        border-radius: 15px;
+        padding: 30px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s;
+        background: rgba(102, 126, 234, 0.05);
+    }
+
+    .upload-area:hover {
+        background: rgba(102, 126, 234, 0.1);
+        border-color: #764ba2;
+    }
+
+    .upload-area.dragover {
+        background: rgba(102, 126, 234, 0.2);
+        transform: scale(1.02);
+    }
+
+    .upload-icon {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+    }
+
+    #fileInput {
+        display: none;
+    }
+
+    .btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 10px;
+        font-size: 1em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        margin: 5px;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.6);
+    }
+
+    .btn:active {
+        transform: translateY(0);
+    }
+
+    .btn-secondary {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    }
+
+    .btn-success {
+        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    }
+
+    #videoContainer {
+        position: relative;
+        background: #000;
+        border-radius: 15px;
+        overflow: hidden;
+        max-width: 100%;
+    }
+
+    #video, #canvas {
+        width: 100%;
+        display: block;
+        border-radius: 15px;
+    }
+
+    #canvas {
+        display: none;
+    }
+
+    .video-controls {
+        margin-top: 10px;
+        text-align: center;
+    }
+
+    #preview {
+        max-width: 100%;
+        border-radius: 15px;
+        margin-top: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .results {
+        display: none;
+        animation: fadeIn 0.5s;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    .emotion-display {
+        text-align: center;
+        padding: 25px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 15px;
+        color: white;
+        margin-bottom: 20px;
+    }
+
+    .emotion-emoji {
+        font-size: 4em;
+        margin-bottom: 10px;
+        animation: bounce 1s;
+    }
+
+    @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-20px); }
+    }
+
+    .emotion-display h3 {
+        font-size: 2em;
+        margin-bottom: 5px;
+    }
+
+    .modality-badge {
+        display: inline-block;
+        padding: 5px 15px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 20px;
+        font-size: 0.85em;
+        margin-top: 10px;
+    }
+
+    .confidence-bar {
+        width: 100%;
+        height: 25px;
+        background: rgba(255,255,255,0.3);
+        border-radius: 15px;
+        overflow: hidden;
+        margin-top: 10px;
+    }
+
+    .confidence-fill {
+        height: 100%;
+        background: rgba(255,255,255,0.9);
+        transition: width 1s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        color: #667eea;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin: 15px 0;
+    }
+
+    .stat-card {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        padding: 15px;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    .stat-value {
+        font-size: 1.5em;
+        font-weight: bold;
+        color: #667eea;
+    }
+
+    .stat-label {
+        color: #666;
+        margin-top: 5px;
+        font-size: 0.85em;
+    }
+
+    .recommendations {
+        margin-top: 20px;
+    }
+
+    .recommendation-item {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        padding: 12px 15px;
+        margin-bottom: 10px;
+        border-radius: 10px;
+        border-left: 4px solid #667eea;
+        transition: all 0.3s;
+        animation: slideInLeft 0.5s;
+        animation-fill-mode: both;
+    }
+
+    .recommendation-item:nth-child(1) { animation-delay: 0.1s; }
+    .recommendation-item:nth-child(2) { animation-delay: 0.2s; }
+    .recommendation-item:nth-child(3) { animation-delay: 0.3s; }
+    .recommendation-item:nth-child(4) { animation-delay: 0.4s; }
+    .recommendation-item:nth-child(5) { animation-delay: 0.5s; }
+
+    @keyframes slideInLeft {
+        from { opacity: 0; transform: translateX(-30px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+
+    .recommendation-item:hover {
+        transform: translateX(5px);
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+    }
+
+    .priority-badge {
+        display: inline-block;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 0.85em;
+        font-weight: 600;
+        margin-bottom: 15px;
+    }
+
+    .priority-high {
+        background: #ff6b6b;
+        color: white;
+    }
+
+    .priority-medium {
+        background: #ffd93d;
+        color: #333;
+    }
+
+    .priority-low {
+        background: #6bcf7f;
+        color: white;
+    }
+
+    .alert-badge {
+        background: #ff4757;
+        color: white;
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-size: 0.9em;
+        margin-top: 10px;
+        display: inline-block;
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.7; }
+    }
+
+    .loading {
+        text-align: center;
+        padding: 30px;
+        display: none;
+    }
+
+    .spinner {
+        border: 4px solid rgba(102, 126, 234, 0.3);
+        border-top: 4px solid #667eea;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 20px;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .emotion-chart {
+        margin-top: 15px;
+        padding: 15px;
+        background: rgba(102, 126, 234, 0.05);
+        border-radius: 10px;
+    }
+
+    .emotion-bar {
+        margin: 10px 0;
+    }
+
+    .emotion-bar-label {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 5px;
+        font-size: 0.9em;
+    }
+
+    .emotion-bar-fill {
+        height: 20px;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        border-radius: 5px;
+        transition: width 1s ease;
+    }
+
+    .motivation-box {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        color: white;
+        padding: 15px;
+        border-radius: 10px;
+        margin: 15px 0;
+        text-align: center;
+        font-style: italic;
+    }
+
+    .analysis-mode {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .mode-btn {
+        flex: 1;
+        padding: 12px;
+        border: 2px solid #667eea;
+        background: white;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-align: center;
+        font-weight: 600;
+        color: #667eea;
+    }
+
+    .mode-btn.active {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+
+    .mode-btn:hover {
+        transform: scale(1.05);
+    }
+
+    .tab-container {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #e0e0e0;
+    }
+
+    .tab {
+        padding: 10px 20px;
+        cursor: pointer;
+        border-bottom: 3px solid transparent;
+        transition: all 0.3s;
+        font-weight: 600;
+        color: #666;
+    }
+
+    .tab.active {
+        color: #667eea;
+        border-bottom-color: #667eea;
+    }
+
+    .tab-content {
+        display: none;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+
+    .detailed-emotions {
+        margin-top: 15px;
+        font-size: 0.9em;
+    }
+
+    .detailed-emotion-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px;
+        background: rgba(255,255,255,0.1);
+        margin: 5px 0;
+        border-radius: 5px;
+    }
+
+    @media (max-width: 1200px) {
+        .main-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="demo-wrapper">
+    <div class="particles" id="particles"></div>
+
+    <div style="max-width: 1600px; margin: 0 auto; position: relative; z-index: 1;">
+    <!-- Demo Header -->
+    <div class="demo-header">
+        <h1>🧠 Live Emotion Analysis</h1>
+        <p>Experience real-time multi-modal emotion detection</p>
+        <div class="demo-badges">
+            <span class="badge">🤖 GoEmotions RoBERTa</span>
+            <span class="badge">📸 DeepFace FER-2013</span>
+            <span class="badge">🔄 Multi-Modal Fusion</span>
+            <span class="badge">⚡ 95%+ Accuracy</span>
+        </div>
+    </div>
+
+    <div class="main-grid">
+        <!-- Input Section -->
+        <div class="card">
+            <h2>📝 User Information</h2>
+            
+            <div class="user-input">
+                <label for="userId">Your ID / Name</label>
+                <input type="text" id="userId" placeholder="Enter your employee ID" value="user_001">
+            </div>
+
+            <div class="analysis-mode">
+                <div class="mode-btn active" data-mode="multimodal">
+                    🔄 Multi-Modal
+                </div>
+                <div class="mode-btn" data-mode="facial">
+                    📸 Facial Only
+                </div>
+                <div class="mode-btn" data-mode="text">
+                    📝 Text Only
+                </div>
+            </div>
+
+            <div class="tab-container">
+                <div class="tab active" data-tab="facial">📸 Face</div>
+                <div class="tab" data-tab="text">📝 Text</div>
+            </div>
+
+            <!-- Facial Analysis Tab -->
+            <div class="tab-content active" id="facial-tab">
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">📁</div>
+                    <p><strong>Click to upload</strong> or drag and drop</p>
+                    <p style="font-size: 0.9em; color: #666; margin-top: 10px;">JPG, PNG</p>
+                </div>
+                <input type="file" id="fileInput" accept="image/*">
+
+                <div style="text-align: center; margin: 15px 0;">
+                    <strong>OR</strong>
+                </div>
+
+                <div id="videoContainer">
+                    <video id="video" autoplay></video>
+                    <canvas id="canvas"></canvas>
+                </div>
+
+                <div class="video-controls">
+                    <button class="btn" id="startCamera">📷 Start Camera</button>
+                    <button class="btn btn-secondary" id="captureBtn" style="display: none;">📸 Capture</button>
+                </div>
+
+                <img id="preview" style="display: none;">
+            </div>
+
+            <!-- Text Analysis Tab -->
+            <div class="tab-content" id="text-tab">
+                <div class="user-input">
+                    <label for="textInput">Share your thoughts or describe how you're feeling</label>
+                    <textarea id="textInput" placeholder="Example: I'm feeling overwhelmed with the project deadline. There's so much work to do and I'm not sure if I can finish on time..."></textarea>
+                </div>
+                <button class="btn btn-success" id="analyzeTextBtn">🔍 Analyze Text</button>
+            </div>
+
+            <button class="btn btn-success" id="analyzeBtn" style="display: none; width: 100%; margin-top: 15px;">🔍 Analyze Emotion</button>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Analyzing your emotion...</p>
+            </div>
+        </div>
+
+        <!-- Facial Results -->
+        <div class="card">
+            <h2>📸 Facial Analysis</h2>
+            
+            <div id="facialResultsPlaceholder" style="text-align: center; padding: 40px; color: #999;">
+                <div style="font-size: 3em; margin-bottom: 15px;">📷</div>
+                <p>Upload or capture a face image</p>
+            </div>
+
+            <div class="results" id="facialResults">
+                <div class="emotion-display">
+                    <div class="emotion-emoji" id="facialEmoji">😊</div>
+                    <h3 id="facialEmotion">Happy</h3>
+                    <p id="facialConfidence">Confidence: 95%</p>
+                    <div class="confidence-bar">
+                        <div class="confidence-fill" id="facialConfidenceFill">95%</div>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="ageValue">-</div>
+                        <div class="stat-label">Age</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="genderValue">-</div>
+                        <div class="stat-label">Gender</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="raceValue">-</div>
+                        <div class="stat-label">Ethnicity</div>
+                    </div>
+                </div>
+
+                <div class="emotion-chart">
+                    <h4 style="margin-bottom: 10px;">Emotion Breakdown</h4>
+                    <div id="facialEmotionChart"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Text & Combined Results -->
+        <div class="card">
+            <h2>📊 Combined Analysis & Recommendations</h2>
+            
+            <div id="combinedResultsPlaceholder" style="text-align: center; padding: 40px; color: #999;">
+                <div style="font-size: 3em; margin-bottom: 15px;">🤖</div>
+                <p>Start analysis to see results</p>
+            </div>
+
+            <div class="results" id="combinedResults">
+                <!-- Text Analysis Section -->
+                <div id="textAnalysisSection" style="display: none;">
+                    <h3 style="color: #667eea; margin-bottom: 15px;">📝 Text Emotion Analysis</h3>
+                    <div class="emotion-display" style="padding: 15px;">
+                        <div class="emotion-emoji" id="textEmoji">😊</div>
+                        <h4 id="textEmotion">Happy</h4>
+                        <p id="textConfidence">Confidence: 92%</p>
+                    </div>
+
+                    <div class="detailed-emotions" id="detailedEmotions"></div>
+                </div>
+
+                <!-- Final Combined Analysis -->
+                <h3 style="color: #667eea; margin-bottom: 15px;">🎯 Final Analysis</h3>
+                <div class="emotion-display">
+                    <span class="modality-badge" id="modalityBadge">Multi-Modal</span>
+                    <div class="emotion-emoji" id="finalEmoji">😊</div>
+                    <h3 id="finalEmotion">Happy</h3>
+                    <p id="finalConfidence">Overall Confidence: 94%</p>
+                    <div class="confidence-bar">
+                        <div class="confidence-fill" id="finalConfidenceFill">94%</div>
+                    </div>
+                </div>
+
+                <div id="alertContainer"></div>
+
+                <div class="motivation-box" id="motivationBox">
+                    You're in a great mindset! Channel this positive energy into impactful work.
+                </div>
+
+                <div class="recommendations">
+                    <h3 style="margin-bottom: 15px;">🎯 Recommended Actions</h3>
+                    <div id="priorityBadge"></div>
+                    <div id="recommendationsList"></div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Particles animation
+    const particlesContainer = document.getElementById('particles');
+    if (particlesContainer) {
+        for (let i = 0; i < 15; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.width = Math.random() * 8 + 3 + 'px';
+            particle.style.height = particle.style.width;
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 15 + 's';
+            particle.style.animationDuration = Math.random() * 10 + 10 + 's';
+            particlesContainer.appendChild(particle);
+        }
+    }
+
+    const emotionEmojis = {
+        'happy': '😊', 'sad': '😢', 'angry': '😠', 'fear': '😰',
+        'surprise': '😮', 'disgust': '🤢', 'neutral': '😐'
+    };
+
+    let stream = null;
+    let capturedImage = null;
+    let currentMode = 'multimodal';
+
+    // Tab switching
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            tab.classList.add('active');
+            document.getElementById(tab.dataset.tab + '-tab').classList.add('active');
+        });
+    });
+
+    // Mode switching
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentMode = btn.dataset.mode;
+        });
+    });
+
+    // File upload
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInput = document.getElementById('fileInput');
+    const preview = document.getElementById('preview');
+
+    uploadArea.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) handleFile(file);
+    });
+
+    function handleFile(file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            preview.src = e.target.result;
+            preview.style.display = 'block';
+            document.getElementById('analyzeBtn').style.display = 'block';
+            capturedImage = file;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    // Webcam
+    document.getElementById('startCamera').addEventListener('click', async () => {
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            document.getElementById('video').srcObject = stream;
+            document.getElementById('startCamera').style.display = 'none';
+            document.getElementById('captureBtn').style.display = 'inline-block';
+        } catch (err) {
+            alert('Error accessing camera: ' + err.message);
+        }
+    });
+
+    document.getElementById('captureBtn').addEventListener('click', () => {
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const context = canvas.getContext('2d');
+
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        context.drawImage(video, 0, 0);
+
+        canvas.toBlob((blob) => {
+            capturedImage = new File([blob], "captured.jpg", { type: "image/jpeg" });
+            preview.src = canvas.toDataURL('image/jpeg');
+            preview.style.display = 'block';
+            document.getElementById('analyzeBtn').style.display = 'block';
+            
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                document.getElementById('video').style.display = 'none';
+                document.getElementById('captureBtn').style.display = 'none';
+            }
+        });
+    });
+
+    // Multi-modal analysis
+    document.getElementById('analyzeBtn').addEventListener('click', async () => {
+        const userId = document.getElementById('userId').value || 'anonymous';
+        const textInput = document.getElementById('textInput').value.trim();
+        
+        if (!capturedImage && !textInput) {
+            alert('Please provide an image or text for analysis!');
+            return;
+        }
+
+        document.getElementById('loading').style.display = 'block';
+        document.getElementById('facialResultsPlaceholder').style.display = 'none';
+        document.getElementById('combinedResultsPlaceholder').style.display = 'none';
+
+        const formData = new FormData();
+        formData.append('user_id', userId);
+        if (capturedImage) formData.append('image', capturedImage);
+        if (textInput) formData.append('text', textInput);
+
+        try {
+            const response = await fetch('/analyze', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+            document.getElementById('loading').style.display = 'none';
+
+            if (data.success) {
+                displayResults(data);
+            } else {
+                alert('Error: ' + data.error);
+            }
+        } catch (error) {
+            document.getElementById('loading').style.display = 'none';
+            alert('Error: ' + error.message);
+        }
+    });
+
+    // Text-only analysis
+    document.getElementById('analyzeTextBtn').addEventListener('click', async () => {
+        const userId = document.getElementById('userId').value || 'anonymous';
+        const text = document.getElementById('textInput').value.trim();
+        
+        if (!text) {
+            alert('Please enter some text!');
+            return;
+        }
+
+        document.getElementById('loading').style.display = 'block';
+        document.getElementById('combinedResultsPlaceholder').style.display = 'none';
+
+        try {
+            const formData = new FormData();
+            formData.append('user_id', userId);
+            formData.append('text', text);
+
+            const response = await fetch('/analyze', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+            document.getElementById('loading').style.display = 'none';
+
+            if (data.success) {
+                displayResults(data);
+            } else {
+                alert('Error: ' + data.error);
+            }
+        } catch (error) {
+            document.getElementById('loading').style.display = 'none';
+            alert('Error: ' + error.message);
+        }
+    });
+
+    function displayResults(data) {
+        // Facial results
+        if (data.facial_analysis) {
+            const facial = data.facial_analysis;
+            document.getElementById('facialResults').style.display = 'block';
+            document.getElementById('facialEmoji').textContent = emotionEmojis[facial.emotion];
+            document.getElementById('facialEmotion').textContent = facial.emotion.charAt(0).toUpperCase() + facial.emotion.slice(1);
+            document.getElementById('facialConfidence').textContent = `Confidence: ${facial.confidence.toFixed(1)}%`;
+            
+            const facialFill = document.getElementById('facialConfidenceFill');
+            facialFill.style.width = facial.confidence + '%';
+            facialFill.textContent = facial.confidence.toFixed(1) + '%';
+
+            document.getElementById('ageValue').textContent = facial.age;
+            document.getElementById('genderValue').textContent = facial.gender;
+            document.getElementById('raceValue').textContent = facial.race;
+
+            // Facial emotion chart
+            const facialChart = document.getElementById('facialEmotionChart');
+            const sortedFacial = Object.entries(facial.all_emotions).sort((a, b) => b[1] - a[1]);
+            facialChart.innerHTML = sortedFacial.map(([emotion, score]) => `
+                <div class="emotion-bar">
+                    <div class="emotion-bar-label">
+                        <span>${emotionEmojis[emotion]} ${emotion.charAt(0).toUpperCase() + emotion.slice(1)}</span>
+                        <span><strong>${score.toFixed(1)}%</strong></span>
+                    </div>
+                    <div style="background: rgba(102, 126, 234, 0.2); border-radius: 5px; overflow: hidden;">
+                        <div class="emotion-bar-fill" style="width: ${score}%"></div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Text results
+        if (data.text_analysis) {
+            const text = data.text_analysis;
+            document.getElementById('textAnalysisSection').style.display = 'block';
+            document.getElementById('textEmoji').textContent = emotionEmojis[text.primary_emotion];
+            document.getElementById('textEmotion').textContent = text.primary_emotion.charAt(0).toUpperCase() + text.primary_emotion.slice(1);
+            document.getElementById('textConfidence').textContent = `Confidence: ${text.confidence.toFixed(1)}%`;
+
+            // Detailed emotions (GoEmotions)
+            if (text.detailed_emotions) {
+                const detailedHTML = text.detailed_emotions.slice(0, 5).map(e => `
+                    <div class="detailed-emotion-item">
+                        <span>${e.emotion}</span>
+                        <span><strong>${e.score.toFixed(1)}%</strong></span>
+                    </div>
+                `).join('');
+                document.getElementById('detailedEmotions').innerHTML = `
+                    <h4 style="margin: 10px 0;">🎭 GoEmotions Detailed Analysis</h4>
+                    ${detailedHTML}
+                `;
+            }
+        }
+
+        // Combined results
+        document.getElementById('combinedResults').style.display = 'block';
+        document.getElementById('finalEmoji').textContent = emotionEmojis[data.final_emotion];
+        document.getElementById('finalEmotion').textContent = data.final_emotion.charAt(0).toUpperCase() + data.final_emotion.slice(1);
+        document.getElementById('finalConfidence').textContent = `Overall Confidence: ${data.final_confidence.toFixed(1)}%`;
+        
+        const finalFill = document.getElementById('finalConfidenceFill');
+        finalFill.style.width = data.final_confidence + '%';
+        finalFill.textContent = data.final_confidence.toFixed(1) + '%';
+
+        // Modality badge
+        const modalityText = {
+            'facial_only': '📸 Facial Only',
+            'text_only': '📝 Text Only',
+            'multimodal': '🔄 Multi-Modal'
+        };
+        document.getElementById('modalityBadge').textContent = modalityText[data.modality] || data.modality;
+
+        // Motivation
+        document.getElementById('motivationBox').textContent = data.motivation;
+
+        // Priority
+        const priorityBadge = document.getElementById('priorityBadge');
+        priorityBadge.innerHTML = `<span class="priority-badge priority-${data.priority}">Priority: ${data.priority.toUpperCase()}</span>`;
+
+        // HR Alert
+        const alertContainer = document.getElementById('alertContainer');
+        if (data.hr_alerted) {
+            alertContainer.innerHTML = '<div class="alert-badge">⚠️ HR/Manager has been notified for support</div>';
+        } else {
+            alertContainer.innerHTML = '';
+        }
+
+        // Recommendations
+        const recommendationsList = document.getElementById('recommendationsList');
+        recommendationsList.innerHTML = data.recommendations.map(rec => 
+            `<div class="recommendation-item">✓ ${rec}</div>`
+        ).join('');
+    }
+</script>
+{% endblock %}
